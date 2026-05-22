@@ -1,0 +1,25 @@
+<h1>Éditer mon profil</h1>
+
+<%= form_with model: @user, url: user_path(@user), method: :patch do |f| %>
+  <% if @user.errors.any? %>
+    <ul style="color:#c00;">
+      <% @user.errors.full_messages.each { |m| %><li><%= m %></li><% } %>
+    </ul>
+  <% end %>
+
+  <p>
+    <%= f.label :name, "Nom" %><br>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :email %><br>
+    <%= f.email_field :email %>
+  </p>
+  <p>
+    <%= f.label :bio %><br>
+    <%= f.text_area :bio, rows: 4, cols: 60 %>
+  </p>
+  <p><%= f.submit "Mettre à jour" %></p>
+<% end %>
+
+<p><%= link_to "Retour", user_path(@user) %></p>

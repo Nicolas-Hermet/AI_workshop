@@ -1,0 +1,18 @@
+<h1>Fournisseurs</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Nom</th><th>Catégorie</th><th>Contact</th><th>Note</th><th></th></tr>
+  </thead>
+  <tbody>
+    <% @vendors.each do |vendor| %>
+      <tr>
+        <td><%= vendor.name %></td>
+        <td><%= vendor.category %></td>
+        <td><%= vendor.contact_email %></td>
+        <td><%= vendor.rating %>/5</td>
+        <td><%= link_to "Voir", vendor_path(vendor) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,77 @@
+name: Check security patches
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Prepare test database
+        run: bin/rails db:test:prepare
+
+      - name: Checkout private tests repository
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/ai-workshop-tests
+          token: ${{ secrets.WORKSHOP_TESTS_PAT }}
+          path: private_tests
+
+      - name: Copy security specs into workspace
+        run: |
+          mkdir -p spec/security
+          cp -r private_tests/spec/security/. spec/security/
+          ls -la spec/security
+
+      - name: Ensure patched/* labels exist
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          for slug in mass-assignment idor sql-injection sensitive-data-exposure; do
+            gh label create "patched/${slug}" \
+              --color 0E8A16 \
+              --description "Faille corrigée : ${slug}" \
+              --repo "${{ github.repository }}" 2>/dev/null || true
+          done
+
+      - name: Run security specs and update PR labels
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set +e
+          mkdir -p tmp
+          shopt -s nullglob
+          for spec_file in spec/security/*_spec.rb; do
+            base=$(basename "$spec_file" _spec.rb)
+            slug=$(echo "$base" | tr '_' '-')
+            label="patched/${slug}"
+            json_file="tmp/${slug}.json"
+            echo "::group::Running ${spec_file}"
+            bundle exec rspec "$spec_file" --format json --out "$json_file" --format documentation
+            echo "::endgroup::"
+            pass=$(ruby -rjson -e 'data=JSON.parse(File.read(ARGV[0])); puts (data["summary"]["failure_count"].to_i==0 && data["summary"]["example_count"].to_i>0 ? "yes" : "no")' "$json_file")
+            if [ "$pass" = "yes" ]; then
+              echo "PASS: ${label}"
+              gh pr edit "$PR_NUMBER" --add-label "$label" --repo "${{ github.repository }}"
+            else
+              echo "FAIL: ${label}"
+              gh pr edit "$PR_NUMBER" --remove-label "$label" --repo "${{ github.repository }}" 2>/dev/null || true
+            fi
+          done
+          exit 0

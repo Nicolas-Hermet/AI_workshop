@@ -1,0 +1,17 @@
+class ApplicationController < ActionController::Base
+  include Pundit::Authorization
+
+  allow_browser versions: :modern
+  stale_when_importmap_changes
+
+  before_action :authenticate_user!
+
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+
+  private
+
+  def user_not_authorized
+    flash[:alert] = "Accès refusé."
+    redirect_back(fallback_location: root_path)
+  end
+end

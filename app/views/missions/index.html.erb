@@ -1,0 +1,35 @@
+<h1>Missions</h1>
+
+<p>
+  <%= link_to "Nouvelle mission", new_mission_path %>
+</p>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Titre</th>
+      <th>Client</th>
+      <th>Consultant</th>
+      <th>Heures</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @missions.each do |mission| %>
+      <tr>
+        <td><%= mission.id %></td>
+        <td><%= mission.title %></td>
+        <td><%= mission.client.name %></td>
+        <td><%= mission.consultant.name || mission.consultant.email %></td>
+        <td><%= mission.hours %></td>
+
+        <% if mission.consultant == current_user %>
+        <td><%= link_to "Voir", mission_path(mission) %></td>
+
+        <% end %>
+
+      </tr>
+    <% end %>
+  </tbody>
+</table>

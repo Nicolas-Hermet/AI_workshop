@@ -1,0 +1,18 @@
+<h1>Tableau de bord admin</h1>
+
+<p>Bienvenue dans la zone réservée à la direction.</p>
+
+<section style="margin-top:2rem; padding:1rem; background:#fff8c5; border:1px solid #ddd;">
+  <h2><%= @board_note&.title %></h2>
+  <p><%= @board_note&.body %></p>
+</section>
+
+<h2>Consultants</h2>
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead><tr><th>Email</th><th>Nom</th><th>Rôle</th></tr></thead>
+  <tbody>
+    <% User.order(:id).each do |u| %>
+      <tr><td><%= u.email %></td><td><%= u.name %></td><td><%= u.role %></td></tr>
+    <% end %>
+  </tbody>
+</table>
