@@ -1,0 +1,18 @@
+<h1>Employés</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Nom</th><th>Poste</th><th>Département</th><th>Embauché le</th><th></th></tr>
+  </thead>
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.full_name %></td>
+        <td><%= employee.job_title %></td>
+        <td><%= employee.department&.name %></td>
+        <td><%= employee.hired_on %></td>
+        <td><%= link_to "Voir", employee_path(employee) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

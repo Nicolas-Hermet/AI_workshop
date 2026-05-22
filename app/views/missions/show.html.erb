@@ -1,0 +1,14 @@
+<h1><%= @mission.title %></h1>
+
+<dl>
+  <dt>Client</dt><dd><%= @mission.client.name %></dd>
+  <dt>Consultant</dt><dd><%= @mission.consultant.name || @mission.consultant.email %></dd>
+  <dt>Heures</dt><dd><%= @mission.hours %></dd>
+  <dt>Taux horaire</dt><dd><%= @mission.hourly_rate %> €</dd>
+  <dt>Notes privées</dt><dd><pre><%= @mission.private_notes %></pre></dd>
+</dl>
+
+<p>
+  <%= link_to "Éditer", edit_mission_path(@mission) %> |
+  <%= link_to "Retour", missions_path %>
+</p>

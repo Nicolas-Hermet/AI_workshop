@@ -1,0 +1,18 @@
+<h1>Factures</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>#</th><th>Mission</th><th>Montant</th><th>Statut</th><th></th></tr>
+  </thead>
+  <tbody>
+    <% @invoices.each do |invoice| %>
+      <tr>
+        <td><%= invoice.id %></td>
+        <td><%= invoice.mission.title %></td>
+        <td><%= number_to_currency(invoice.amount_cents.to_f / 100, unit: "€", format: "%n %u") %></td>
+        <td><%= invoice.status %></td>
+        <td><%= link_to "Voir", invoice_path(invoice) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

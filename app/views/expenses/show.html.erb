@@ -1,0 +1,12 @@
+<h1>Note de frais #<%= @expense.id %></h1>
+
+<dl>
+  <dt>Employé</dt><dd><%= @expense.employee&.full_name %></dd>
+  <dt>Catégorie</dt><dd><%= @expense.category %></dd>
+  <dt>Montant</dt><dd><%= number_to_currency(@expense.amount_cents.to_i / 100, unit: "€", format: "%n %u") %></dd>
+  <dt>Date</dt><dd><%= @expense.spent_on %></dd>
+  <dt>Statut</dt><dd><%= @expense.status %></dd>
+  <dt>Mémo</dt><dd><%= @expense.memo %></dd>
+</dl>
+
+<p><%= link_to "Retour", expenses_path %></p>

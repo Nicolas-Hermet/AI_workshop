@@ -1,0 +1,19 @@
+<h1>Contrats</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Référence</th><th>Client</th><th>Signé le</th><th>Valeur</th><th>Statut</th><th></th></tr>
+  </thead>
+  <tbody>
+    <% @contracts.each do |contract| %>
+      <tr>
+        <td><%= contract.reference %></td>
+        <td><%= contract.client&.name %></td>
+        <td><%= contract.signed_on %></td>
+        <td><%= number_to_currency(contract.value_cents.to_i / 100, unit: "€", format: "%n %u") %></td>
+        <td><%= contract.status %></td>
+        <td><%= link_to "Voir", contract_path(contract) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

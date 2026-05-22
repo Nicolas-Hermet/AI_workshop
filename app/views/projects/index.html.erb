@@ -1,0 +1,18 @@
+<h1>Projets</h1>
+
+<table border="1" cellpadding="6" cellspacing="0">
+  <thead>
+    <tr><th>Code</th><th>Nom</th><th>Client</th><th>Statut</th><th></th></tr>
+  </thead>
+  <tbody>
+    <% @projects.each do |project| %>
+      <tr>
+        <td><%= project.code %></td>
+        <td><%= project.name %></td>
+        <td><%= project.client&.name %></td>
+        <td><%= project.status %></td>
+        <td><%= link_to "Voir", project_path(project) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Ai Workshop" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Ai Workshop">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <% if user_signed_in? %>
+      <nav style="padding: 0.5rem 1rem; background:#222; color:#eee;">
+        <%= link_to "Consulting ERP", root_path, style: "color:#eee; text-decoration:none; font-weight:bold;" %>
+        <% nav_links = {
+             "Clients" => clients_path,
+             "Contrats" => contracts_path,
+             "Départements" => departments_path,
+             "Employés" => employees_path,
+             "Notes de frais" => expenses_path,
+             "Factures" => invoices_path,
+             "Missions" => missions_path,
+             "Projets" => projects_path,
+             "Fournisseurs" => vendors_path,
+             "Mon profil" => edit_user_path(current_user)
+           } %>
+        <% nav_links.each do |label, path| %>
+          &nbsp;|&nbsp;
+          <%= link_to label, path, style: "color:#eee;" %>
+        <% end %>
+        <% if current_user.admin? %>
+          &nbsp;|&nbsp;
+          <%= link_to "Admin", admin_dashboard_path, style: "color:#ffd54f;" %>
+        <% end %>
+        <span style="float:right;">
+          <%= current_user.email %> (<%= current_user.role %>)
+          <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, form: { style: "display:inline;" }, style: "background:none; border:none; color:#eee; cursor:pointer;" %>
+        </span>
+      </nav>
+    <% end %>
+    <main style="padding: 1rem 2rem; max-width: 960px;">
+      <% if notice %><p style="color:green;"><%= notice %></p><% end %>
+      <% if alert %><p style="color:#c00;"><%= alert %></p><% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

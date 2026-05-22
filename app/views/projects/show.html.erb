@@ -1,0 +1,12 @@
+<h1><%= @project.name %></h1>
+
+<dl>
+  <dt>Code</dt><dd><%= @project.code %></dd>
+  <dt>Client</dt><dd><%= @project.client&.name %></dd>
+  <dt>Statut</dt><dd><%= @project.status %></dd>
+  <dt>Début</dt><dd><%= @project.starts_on %></dd>
+  <dt>Fin</dt><dd><%= @project.ends_on %></dd>
+  <dt>Budget</dt><dd><%= number_to_currency(@project.budget_cents.to_i / 100, unit: "€", format: "%n %u") %></dd>
+</dl>
+
+<p><%= link_to "Retour", projects_path %></p>

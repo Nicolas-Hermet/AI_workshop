@@ -1,0 +1,11 @@
+<h1>Facture #<%= @invoice.id %></h1>
+
+<dl>
+  <dt>Mission</dt><dd><%= @invoice.mission.title %></dd>
+  <dt>Client</dt><dd><%= @invoice.mission.client.name %></dd>
+  <dt>Montant</dt><dd><%= number_to_currency(@invoice.amount_cents.to_f / 100, unit: "€", format: "%n %u") %></dd>
+  <dt>Statut</dt><dd><%= @invoice.status %></dd>
+  <dt>Notes internes</dt><dd><pre><%= @invoice.internal_notes %></pre></dd>
+</dl>
+
+<p><%= link_to "Retour", invoices_path %></p>

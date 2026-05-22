@@ -1,0 +1,11 @@
+<h1><%= @employee.full_name %></h1>
+
+<dl>
+  <dt>Poste</dt><dd><%= @employee.job_title %></dd>
+  <dt>Email</dt><dd><%= @employee.email %></dd>
+  <dt>Département</dt><dd><%= @employee.department&.name %></dd>
+  <dt>Embauché le</dt><dd><%= @employee.hired_on %></dd>
+  <dt>Salaire</dt><dd><%= number_to_currency(@employee.salary_cents.to_i / 100, unit: "€", format: "%n %u") %></dd>
+</dl>
+
+<p><%= link_to "Retour", employees_path %></p>
