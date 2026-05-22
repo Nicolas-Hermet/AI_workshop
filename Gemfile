@@ -66,6 +66,7 @@ group :development do
 end
 
 group :test do
+  # We should had FactoryBot here
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
