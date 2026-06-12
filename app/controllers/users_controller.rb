@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-
-
   def show
     @user = User.find(params[:id])
     authorize @user
@@ -14,6 +12,7 @@ class UsersController < ApplicationController
   def update
     @user = User.find(params[:id])
     authorize @user
+    
     if @user.update(user_params)
       redirect_to edit_user_path(@user), notice: "Profil mis à jour."
     else
@@ -24,6 +23,11 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :bio, :role)
+    # CORRECTION : Seul un admin peut modifier le paramètre :role
+    if current_user.admin?
+      params.require(:user).permit(:name, :email, :bio, :role)
+    else
+      params.require(:user).permit(:name, :email, :bio)
+    end
   end
 end
