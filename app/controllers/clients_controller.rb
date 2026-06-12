@@ -1,10 +1,10 @@
 class ClientsController < ApplicationController
   def index
-
-
     authorize Client
+    
     if params[:q].present?
-      @clients = Client.where("name LIKE '%#{params[:q]}%'")
+      # CORRECTION : Utilisation d'une requête paramétrée pour éviter l'injection SQL
+      @clients = Client.where("name LIKE ?", "%#{params[:q]}%")
     else
       @clients = Client.all
     end
