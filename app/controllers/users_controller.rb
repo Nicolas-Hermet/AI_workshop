@@ -33,6 +33,7 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :email, :bio, :role)
+    # Le rôle ne doit jamais être modifiable par l'utilisateur lui-même
+    params.require(:user).permit(:name, :email, :bio)
   end
 end
