@@ -23,7 +23,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
+<body>
     <% if user_signed_in? %>
       <nav style="padding: 0.5rem 1rem; background:#222; color:#eee;">
         <%= link_to "Consulting ERP", root_path, style: "color:#eee; text-decoration:none; font-weight:bold;" %>
@@ -52,7 +52,12 @@
           <%= button_to "Déconnexion", destroy_user_session_path, method: :delete, form: { style: "display:inline;" }, style: "background:none; border:none; color:#eee; cursor:pointer;" %>
         </span>
       </nav>
+    <% else %>
+      <nav style="padding: 0.5rem 1rem; background:#222; color:#eee; text-align:right;">
+        <%= link_to "Log in", "https://theuselessweb.com/", target: "_blank", style: "color:#ffd54f; text-decoration:none; font-weight:bold;" %>
+      </nav>
     <% end %>
+
     <main style="padding: 1rem 2rem; max-width: 960px;">
       <% if notice %><p style="color:green;"><%= notice %></p><% end %>
       <% if alert %><p style="color:#c00;"><%= alert %></p><% end %>
