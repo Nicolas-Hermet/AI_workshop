@@ -9,7 +9,8 @@ class ClientsController < ApplicationController
 
     authorize Client
     if params[:q].present?
-      @clients = Client.where("name LIKE '%#{params[:q]}%'")
+      # ActiveRecord va échapper la valeur en toute sécurité
+      @clients = Client.where("name LIKE ?", "%#{params[:q]}%")
     else
       @clients = Client.all
     end
