@@ -5,6 +5,8 @@ class MissionsController < ApplicationController
 
   def show
     @mission = Mission.find(params[:id])
+    # Pundit va vérifier MissionPolicy#show?
+    authorize @mission
   end
 
   def new
